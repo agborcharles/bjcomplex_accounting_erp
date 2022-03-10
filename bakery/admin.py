@@ -4,6 +4,44 @@ from import_export.admin import ImportExportModelAdmin
 
 
 # Register your models here.
+class BakeryRmReturnsAdmin(ImportExportModelAdmin):
+    list_display = ['id', 'created_at', 'employee', 'department','return_manager','supplier',
+    'return_id', 'product','qty', 'unit_cost_price', 'total_cost_price',]
+    search_fields = ['supplier__startswith', 'product__startswith', ]
+    list_display_links = ['id', 'created_at', 'product' ]
+    list_per_page =200
+    list_filter = ('created_at', 'supplier', 'product' )
+    list_editable = ( 'qty', 'unit_cost_price', )
+
+class BakeryRmDamagesAdmin(ImportExportModelAdmin):
+    list_display = ['id', 'created_at', 'employee', 'department','damage_id', 'product','qty',
+    'unit_cost_price', 'total_cost_price',]
+    search_fields = ['product__startswith', ]
+    list_display_links = ['id', 'created_at', 'product' ]
+    list_per_page =200
+    list_filter = ('created_at', 'product', )
+    list_editable = ( 'qty', 'unit_cost_price', )
+
+
+class BakeryPurchaseAdmin(ImportExportModelAdmin):
+    list_display = ['id', 'created_at', 'employee', 'department','procuement_manager','supplier',
+    'purchase_id', 'product','qty', 'unit_cost_price', 'total_cost_price',]
+    search_fields = ['supplier__startswith', 'product__startswith', ]
+    list_display_links = ['id', 'created_at', 'product' ]
+    list_per_page =200
+    list_filter = ('created_at', 'supplier', 'product' )
+    list_editable = ( 'qty', 'unit_cost_price', )
+
+class BakeryInventoryAdmin(ImportExportModelAdmin):
+    list_display = ['id', 'created_at', 'employee', 'department','sub_department','stock_status',
+    'entry_measure', 'product','qty', 'unit_cost_price', 'total_cost_price',]
+    search_fields = ['customer_from__startswith', 'product__startswith', ]
+    list_display_links = ['id', 'created_at', 'sub_department','stock_status', 'product' ]
+    list_per_page =200
+    list_filter = ('created_at', 'sub_department','stock_status', 'product' )
+    list_editable = ( 'qty', 'unit_cost_price', )
+
+
 class BakeryReturnAdmin(ImportExportModelAdmin):
     list_display = ['id', 'created_at', 'employee', 'order_no','invoice_id','customer_from','return_id','customer_to',
     'department', 'sub_department','category', 'product', 'qty', 'cost_price', 'total_amount', ]
@@ -58,3 +96,7 @@ admin.site.register(BakeryOpeningBalances, BakeryOpeningBalancesAdmin)
 admin.site.register(BakeryPayment, BakeryPaymentAdmin)
 admin.site.register(BakeryCollector, BakeryCollectorAdmin)
 admin.site.register(BakerySales, BakerySalesAdmin)
+admin.site.register(BakeryInventory, BakeryInventoryAdmin)
+admin.site.register(BakeryPurchase, BakeryPurchaseAdmin)
+admin.site.register(BakeryRmDamages, BakeryRmDamagesAdmin)
+admin.site.register(BakeryRmReturns, BakeryRmReturnsAdmin)

@@ -20,10 +20,9 @@ class BakeryRmReturns(models.Model):
     created_at = models.DateField("Date", default=now)
     employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     department =  models.CharField(max_length = 500, choices=DEPARTMENTS, default='Bakery', null = True, blank = True, verbose_name = 'Department')
-    procuement_manager =  models.CharField(max_length=200, verbose_name = 'Procuement Manager')
+    return_manager =  models.CharField(max_length=200, verbose_name = 'Procuement Manager')
     location =  models.CharField(max_length=200, verbose_name = 'Location')
-    purchase_id = models.CharField(max_length=200, null = True, blank = True, verbose_name = "Purchase Invoice Id")
-    location =  models.CharField(max_length=200, verbose_name = 'Location')
+    return_id = models.CharField(max_length=200, null = True, blank = True, verbose_name = "Purchase Invoice Id")
     supplier =  models.CharField(max_length=200, verbose_name = 'Supplier')
     category=  models.CharField(max_length = 500, choices=CATEGORY, default='Direct', null = True, blank = True, verbose_name = 'Category')
     entry_measure =  models.CharField(max_length=200, verbose_name = 'Entry Measure')
@@ -36,7 +35,7 @@ class BakeryRmReturns(models.Model):
 
     @property
     def get_total_cost_price(self):
-        return self.qty * self.total_cost_price
+        return self.qty * self.unit_cost_price
 
     #@property
     #def get_discount_amount(self):
@@ -53,7 +52,7 @@ class BakeryRmReturns(models.Model):
         #self.discount_value = self.get_discount_amount
         #self.net_amount = self.total_amount - self.discount_value
 
-        super(BakeryInventory, self).save(*args, **kwargs)
+        super(BakeryRmReturns, self).save(*args, **kwargs)
 
 
     def __str__(self):
@@ -61,7 +60,7 @@ class BakeryRmReturns(models.Model):
 
     class Meta():
         verbose_name = 'BakeryRmReturn'
-        verbose_name_plural = 'BakeryPRmReturns'
+        verbose_name_plural = 'BakeryRmReturns'
         ordering: ['date']
 
 
@@ -79,7 +78,8 @@ class BakeryRmDamages(models.Model):
     employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     department =  models.CharField(max_length = 500, choices=DEPARTMENTS, default='Bakery', null = True, blank = True, verbose_name = 'Department')
     location =  models.CharField(max_length=200, verbose_name = 'Location')
-    damage_id = models.CharField(max_length=200, null = True, blank = True, verbose_name = "Purchase Invoice Id")    category=  models.CharField(max_length = 500, choices=CATEGORY, default='Direct', null = True, blank = True, verbose_name = 'Category')
+    damage_id = models.CharField(max_length=200, null = True, blank = True, verbose_name = "Purchase Invoice Id")
+    category=  models.CharField(max_length = 500, choices=CATEGORY, default='Direct', null = True, blank = True, verbose_name = 'Category')
     entry_measure =  models.CharField(max_length=200, verbose_name = 'Entry Measure')
     weight_pack =  models.CharField(max_length=200, verbose_name = 'Weight/Pack')
     product = models.CharField(max_length=200, verbose_name = 'Product')
@@ -89,7 +89,7 @@ class BakeryRmDamages(models.Model):
 
     @property
     def get_total_cost_price(self):
-        return self.qty * self.total_cost_price
+        return self.qty * self.unit_cost_price
 
     #@property
     #def get_discount_amount(self):
@@ -104,7 +104,7 @@ class BakeryRmDamages(models.Model):
         #self.discount_value = self.get_discount_amount
         #self.net_amount = self.total_amount - self.discount_value
 
-        super(BakeryInventory, self).save(*args, **kwargs)
+        super(BakeryRmDamages, self).save(*args, **kwargs)
 
 
     def __str__(self):
@@ -144,7 +144,7 @@ class BakeryPurchase(models.Model):
 
     @property
     def get_total_cost_price(self):
-        return self.qty * self.total_cost_price
+        return self.qty * self.unit_cost_price
 
     #@property
     #def get_discount_amount(self):
@@ -161,7 +161,7 @@ class BakeryPurchase(models.Model):
         #self.discount_value = self.get_discount_amount
         #self.net_amount = self.total_amount - self.discount_value
 
-        super(BakeryInventory, self).save(*args, **kwargs)
+        super(BakeryPurchase, self).save(*args, **kwargs)
 
 
     def __str__(self):
@@ -193,7 +193,7 @@ class BakeryInventory(models.Model):
     employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     department =  models.CharField(max_length = 500, choices=DEPARTMENTS, default='Bakery', null = True, blank = True, verbose_name = 'Department')
     sub_department =  models.CharField(max_length = 500, choices=SUBDEPARTMENTS, default='', null = True, blank = True, verbose_name = 'Sub Department')
-    stock_status =  models.CharField(max_length = 500, choices=SUBDEPARTMENTS, default='', null = True, blank = True, verbose_name = 'Stock Status')
+    stock_status =  models.CharField(max_length = 500, choices=STATUS, default='', null = True, blank = True, verbose_name = 'Stock Status')
     entry_measure = models.FloatField(default=0.0, verbose_name = 'Entry Measure')
     product = models.CharField(max_length=200, verbose_name = 'Product')
     qty = models.FloatField(default=0.0, verbose_name = 'Quantity')
@@ -202,7 +202,7 @@ class BakeryInventory(models.Model):
 
     @property
     def get_total_cost_price(self):
-        return self.qty * self.total_cost_price
+        return self.qty * self.unit_cost_price
 
     #@property
     #def get_discount_amount(self):
