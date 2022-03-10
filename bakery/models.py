@@ -7,6 +7,229 @@ from django.dispatch import receiver
 
 
 # Create your models here.
+class BakeryRmReturns(models.Model):
+    DEPARTMENTS = (
+        ('Bakery', 'Bakery'),
+    )
+
+    CATEGORY = (
+        ('Direct', 'Direct'),
+        ('Indirect', 'Indirect'),
+    )
+
+    created_at = models.DateField("Date", default=now)
+    employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    department =  models.CharField(max_length = 500, choices=DEPARTMENTS, default='Bakery', null = True, blank = True, verbose_name = 'Department')
+    procuement_manager =  models.CharField(max_length=200, verbose_name = 'Procuement Manager')
+    location =  models.CharField(max_length=200, verbose_name = 'Location')
+    purchase_id = models.CharField(max_length=200, null = True, blank = True, verbose_name = "Purchase Invoice Id")
+    location =  models.CharField(max_length=200, verbose_name = 'Location')
+    supplier =  models.CharField(max_length=200, verbose_name = 'Supplier')
+    category=  models.CharField(max_length = 500, choices=CATEGORY, default='Direct', null = True, blank = True, verbose_name = 'Category')
+    entry_measure =  models.CharField(max_length=200, verbose_name = 'Entry Measure')
+    weight_pack =  models.CharField(max_length=200, verbose_name = 'Weight/Pack')
+    product = models.CharField(max_length=200, verbose_name = 'Product')
+    qty = models.FloatField(default=0.0, verbose_name = 'Quantity')
+    unit_cost_price = models.FloatField(default=0.0, verbose_name = 'Unit Cost Price')
+    total_cost_price = models.FloatField(default=0.0, verbose_name = 'Total Cost Price')
+
+
+    @property
+    def get_total_cost_price(self):
+        return self.qty * self.total_cost_price
+
+    #@property
+    #def get_discount_amount(self):
+        #return self.discount * self.qty
+
+
+    #@property
+    #def get_net_amount(self):
+        #return self.net_amount - self.total_amount_paid
+    #---------------- Value Calculations -----------------#
+
+    def save(self, *args, **kwargs):
+        self.total_cost_price= self.get_total_cost_price
+        #self.discount_value = self.get_discount_amount
+        #self.net_amount = self.total_amount - self.discount_value
+
+        super(BakeryInventory, self).save(*args, **kwargs)
+
+
+    def __str__(self):
+        return self.product
+
+    class Meta():
+        verbose_name = 'BakeryRmReturn'
+        verbose_name_plural = 'BakeryPRmReturns'
+        ordering: ['date']
+
+
+class BakeryRmDamages(models.Model):
+    DEPARTMENTS = (
+        ('Bakery', 'Bakery'),
+    )
+
+    CATEGORY = (
+        ('Direct', 'Direct'),
+        ('Indirect', 'Indirect'),
+    )
+
+    created_at = models.DateField("Date", default=now)
+    employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    department =  models.CharField(max_length = 500, choices=DEPARTMENTS, default='Bakery', null = True, blank = True, verbose_name = 'Department')
+    location =  models.CharField(max_length=200, verbose_name = 'Location')
+    damage_id = models.CharField(max_length=200, null = True, blank = True, verbose_name = "Purchase Invoice Id")    category=  models.CharField(max_length = 500, choices=CATEGORY, default='Direct', null = True, blank = True, verbose_name = 'Category')
+    entry_measure =  models.CharField(max_length=200, verbose_name = 'Entry Measure')
+    weight_pack =  models.CharField(max_length=200, verbose_name = 'Weight/Pack')
+    product = models.CharField(max_length=200, verbose_name = 'Product')
+    qty = models.FloatField(default=0.0, verbose_name = 'Quantity')
+    unit_cost_price = models.FloatField(default=0.0, verbose_name = 'Unit Cost Price')
+    total_cost_price = models.FloatField(default=0.0, verbose_name = 'Total Cost Price')
+
+    @property
+    def get_total_cost_price(self):
+        return self.qty * self.total_cost_price
+
+    #@property
+    #def get_discount_amount(self):
+        #return self.discount * self.qty
+
+    #@property
+    #def get_net_amount(self):
+        #return self.net_amount - self.total_amount_paid
+    #---------------- Value Calculations -----------------#
+    def save(self, *args, **kwargs):
+        self.total_cost_price= self.get_total_cost_price
+        #self.discount_value = self.get_discount_amount
+        #self.net_amount = self.total_amount - self.discount_value
+
+        super(BakeryInventory, self).save(*args, **kwargs)
+
+
+    def __str__(self):
+        return self.product
+
+    class Meta():
+        verbose_name = 'BakeryRmDamage'
+        verbose_name_plural = 'BakeryRmDamages'
+        ordering: ['date']
+
+
+class BakeryPurchase(models.Model):
+    DEPARTMENTS = (
+        ('Bakery', 'Bakery'),
+    )
+
+    CATEGORY = (
+        ('Direct', 'Direct'),
+        ('Indirect', 'Indirect'),
+    )
+
+    created_at = models.DateField("Date", default=now)
+    employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    department =  models.CharField(max_length = 500, choices=DEPARTMENTS, default='Bakery', null = True, blank = True, verbose_name = 'Department')
+    procuement_manager =  models.CharField(max_length=200, verbose_name = 'Procuement Manager')
+    location =  models.CharField(max_length=200, verbose_name = 'Location')
+    purchase_id = models.CharField(max_length=200, null = True, blank = True, verbose_name = "Purchase Invoice Id")
+    supplier =  models.CharField(max_length=200, verbose_name = 'Supplier')
+    category=  models.CharField(max_length = 500, choices=CATEGORY, default='Direct', null = True, blank = True, verbose_name = 'Category')
+    entry_measure =  models.CharField(max_length=200, verbose_name = 'Entry Measure')
+    weight_pack =  models.CharField(max_length=200, verbose_name = 'Weight/Pack')
+    product = models.CharField(max_length=200, verbose_name = 'Product')
+    qty = models.FloatField(default=0.0, verbose_name = 'Quantity')
+    unit_cost_price = models.FloatField(default=0.0, verbose_name = 'Unit Cost Price')
+    total_cost_price = models.FloatField(default=0.0, verbose_name = 'Total Cost Price')
+
+
+    @property
+    def get_total_cost_price(self):
+        return self.qty * self.total_cost_price
+
+    #@property
+    #def get_discount_amount(self):
+        #return self.discount * self.qty
+
+
+    #@property
+    #def get_net_amount(self):
+        #return self.net_amount - self.total_amount_paid
+    #---------------- Value Calculations -----------------#
+
+    def save(self, *args, **kwargs):
+        self.total_cost_price= self.get_total_cost_price
+        #self.discount_value = self.get_discount_amount
+        #self.net_amount = self.total_amount - self.discount_value
+
+        super(BakeryInventory, self).save(*args, **kwargs)
+
+
+    def __str__(self):
+        return self.product
+
+    class Meta():
+        verbose_name = 'BakeryPurchase'
+        verbose_name_plural = 'BakeryPurchases'
+        ordering: ['date']
+
+
+class BakeryInventory(models.Model):
+    DEPARTMENTS = (
+        ('Bakery', 'Bakery'),
+    )
+
+    SUBDEPARTMENTS = (
+        ('Boulangerie Morning', 'Boulangerie Morning'),
+        ('Boulangerie Evening', 'Boulangerie Evening'),
+        ('Patisserie', 'Patisserie'),
+    )
+    STATUS = (
+        ('Opening Stock', 'Opening Stock'),
+        ('Closing Stock', 'Closing Stock'),
+
+    )
+
+    created_at = models.DateField("Date", default=now)
+    employee = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    department =  models.CharField(max_length = 500, choices=DEPARTMENTS, default='Bakery', null = True, blank = True, verbose_name = 'Department')
+    sub_department =  models.CharField(max_length = 500, choices=SUBDEPARTMENTS, default='', null = True, blank = True, verbose_name = 'Sub Department')
+    stock_status =  models.CharField(max_length = 500, choices=SUBDEPARTMENTS, default='', null = True, blank = True, verbose_name = 'Stock Status')
+    entry_measure = models.FloatField(default=0.0, verbose_name = 'Entry Measure')
+    product = models.CharField(max_length=200, verbose_name = 'Product')
+    qty = models.FloatField(default=0.0, verbose_name = 'Quantity')
+    unit_cost_price = models.FloatField(default=0.0, verbose_name = 'Unit Cost Price')
+    total_cost_price = models.FloatField(default=0.0, verbose_name = 'Total Cost Price')
+
+    @property
+    def get_total_cost_price(self):
+        return self.qty * self.total_cost_price
+
+    #@property
+    #def get_discount_amount(self):
+        #return self.discount * self.qty
+
+
+    #@property
+    #def get_net_amount(self):
+        #return self.net_amount - self.total_amount_paid
+    #---------------- Value Calculations -----------------#
+
+    def save(self, *args, **kwargs):
+        self.total_cost_price= self.get_total_cost_price
+        #self.discount_value = self.get_discount_amount
+        #self.net_amount = self.total_amount - self.discount_value
+
+        super(BakeryInventory, self).save(*args, **kwargs)
+
+
+    def __str__(self):
+        return self.product
+
+    class Meta():
+        verbose_name = 'BakeryInventory'
+        verbose_name_plural = 'BakeryInventory'
+        ordering: ['date']
+
 
 class BakeryOpeningBalances(models.Model):
     DEPARTMENTS = (
